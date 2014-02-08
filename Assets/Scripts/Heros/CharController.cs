@@ -8,46 +8,32 @@ public class CharController : MonoBehaviour {
 
 	public float maxSpeed = 4f;
 	bool facingLeft = true;
-	public static bool grounded = false;
-	bool walled = false;
-	bool hurted = false;
-	public Transform groundCheck;
-	public Transform wallCheckA;
-	public Transform wallCheckB;
-	float groundRadius = 0.2f;
-	public LayerMask whatIsGround;
 	public float jumpForce = 15f;
 	
 	void Start () 
 	{
 		animator = GetComponent<Animator>();
 	}
-	
-	void FixedUpdate () 
-	{	
-	}
 
-	void Update ()
+	void FixedUpdate ()
 	{
 		
 		//get the current state
 		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-		
-		grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
-		walled = Physics2D.OverlapArea(wallCheckA.position, wallCheckB.position, whatIsGround);
-		hurted = stateInfo.IsName("Hurt");
-		animator.SetBool("Grounded", grounded);
+		animator.SetBool("Grounded", Etat.grounded);
 		
 		animator.SetFloat ("SpeedVertical", rigidbody2D.velocity.y);
 		
 		float h = Input.GetAxis("Horizontal");
-		if(!hurted)
+		if(!Etat.hurted)
 		{
-			if(!walled && !stateInfo.IsName("Attack ground"))
+			Debug.Log ("not hurted");
+			if(!Etat.walled && !stateInfo.IsName("Attack ground"))
 			{
 				float speed = h*maxSpeed;
 				
 				rigidbody2D.velocity = new Vector2(speed,rigidbody2D.velocity.y);
+				//rigidbody2D.AddForce(new Vector2(speed, 0f));
 				animator.SetFloat("Speed", Mathf.Abs(h));
 			}
 			else
@@ -55,11 +41,14 @@ public class CharController : MonoBehaviour {
 				rigidbody2D.velocity = new Vector2(0,rigidbody2D.velocity.y);
 				animator.SetFloat("Speed", 0);
 			}
-			if(grounded && Input.GetButton("Jump"))
+			if(Etat.grounded && Input.GetButton("Jump") && !stateInfo.IsName("Attack ground"))
 			{
 				animator.SetBool("Grounded",false);
 				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x,jumpForce);
 			}
+		}
+		else{
+			Debug.Log ("hurted");
 		}
 		
 		if(h < 0 && !facingLeft)

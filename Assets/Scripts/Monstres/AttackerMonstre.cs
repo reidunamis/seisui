@@ -8,6 +8,7 @@ public class AttackerMonstre : MonoBehaviour {
 	public Transform frontB;
 	public Transform character;
 	public LayerMask layerEnnemy;
+	public GameObject coup;
 	int i = 0;
 	// Use this for initialization
 	void Start () {		
@@ -17,16 +18,11 @@ public class AttackerMonstre : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		i++;
-		if(i >= 60)
+		if(i >= 60 && !Etat.hurted)
 		{
 			i=0;
 			animator.SetTrigger("Attack");
-			Collider2D touche = null;
-			touche = Physics2D.OverlapArea(frontA.position, frontB.position, layerEnnemy);
-			if(touche)
-			{
-				touche.SendMessage("Hurt", transform);
-			}
+			Instantiate(coup, frontA.position, frontA.rotation);
 		}
 	}
 }
