@@ -23,7 +23,7 @@ public class Hurtable : MonoBehaviour {
 			}
 			Debug.Log ("on lance le hurt");
 			Etat.hurted = true;
-			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x+force, rigidbody2D.velocity.y+1f);
+			//rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x+force, rigidbody2D.velocity.y+1f);
 			//rigidbody2D.AddForce(new Vector2(rigidbody2D.velocity.x+force, rigidbody2D.velocity.y+1f));
 		}
 

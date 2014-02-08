@@ -9,12 +9,12 @@ public class CharController : MonoBehaviour {
 	public float maxSpeed = 4f;
 	bool facingLeft = true;
 	public float jumpForce = 15f;
+	float i = 0;
 	
 	void Start () 
 	{
 		animator = GetComponent<Animator>();
 	}
-
 	void FixedUpdate ()
 	{
 		
@@ -25,9 +25,10 @@ public class CharController : MonoBehaviour {
 		animator.SetFloat ("SpeedVertical", rigidbody2D.velocity.y);
 		
 		float h = Input.GetAxis("Horizontal");
+
 		if(!Etat.hurted)
 		{
-			Debug.Log ("not hurted");
+			i = 0;
 			if(!Etat.walled && !stateInfo.IsName("Attack ground"))
 			{
 				float speed = h*maxSpeed;
@@ -46,18 +47,28 @@ public class CharController : MonoBehaviour {
 				animator.SetBool("Grounded",false);
 				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x,jumpForce);
 			}
+			if(h < 0 && !facingLeft)
+			{
+				Flip ();
+			}
+			else if(h > 0 && facingLeft)
+			{
+				Flip ();
+			}
 		}
-		else{
-			Debug.Log ("hurted");
-		}
-		
-		if(h < 0 && !facingLeft)
+		else
 		{
-			Flip ();
-		}
-		else if(h > 0 && facingLeft)
-		{
-			Flip ();
+			i++;
+			float xForce = 2f + Mathf.Log(1f+i)*Time.deltaTime*100;
+
+			if(!facingLeft)
+			{
+				xForce *= -1;
+			}
+			Debug.Log(i);
+			//float yForce = Mathf.Log(1f+i)*Time.deltaTime*100;
+			float yForce = -Mathf.Pow(i*0.8f-3, 2) + 5;
+			rigidbody2D.velocity = new Vector2(xForce,yForce);
 		}
 	}
 
