@@ -25,7 +25,6 @@ public class Etat : MonoBehaviour {
 		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 		grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
 		walled = Physics2D.OverlapArea(wallCheckA.position, wallCheckB.position, whatIsGround);
-		//hurted = stateInfo.IsName("Hurt");	
 		hurted = animator.GetNextAnimatorStateInfo(0).IsName("Hurt") || stateInfo.IsName("Hurt");
 	}
 }

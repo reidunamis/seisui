@@ -34,7 +34,6 @@ public class CharController : MonoBehaviour {
 				float speed = h*maxSpeed;
 				
 				rigidbody2D.velocity = new Vector2(speed,rigidbody2D.velocity.y);
-				//rigidbody2D.AddForce(new Vector2(speed, 0f));
 				animator.SetFloat("Speed", Mathf.Abs(h));
 			}
 			else
@@ -65,7 +64,6 @@ public class CharController : MonoBehaviour {
 			{
 				xForce *= -1;
 			}
-			Debug.Log(i);
 			//float yForce = Mathf.Log(1f+i)*Time.deltaTime*100;
 			float yForce = -Mathf.Pow(i*0.8f-3, 2) + 5;
 			rigidbody2D.velocity = new Vector2(xForce,yForce);
